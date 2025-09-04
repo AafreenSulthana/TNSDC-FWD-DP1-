@@ -1,0 +1,118 @@
+/* Reset and global */
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Arial', sans-serif;}
+body {background:#121212; color:#fff; line-height:1.6; overflow-x:hidden; scroll-behavior: smooth;}
+header {display:flex; justify-content:space-between; align-items:center; padding:20px 40px; background:rgba(31,31,31,0.9); position:sticky; top:0; z-index:100; backdrop-filter:blur(10px); transition: all 0.3s; box-shadow:0 5px 15px rgba(0,255,255,0.1);}
+header h1 {color:#00ffff; font-size:1.8rem; cursor:pointer; transition: transform 0.3s, color 0.3s;}
+header h1:hover {transform:scale(1.1); color:#ff00ff;}
+nav a {color:#fff; text-decoration:none; margin-left:20px; font-weight:bold; position:relative; transition:0.3s;}
+nav a::after {content:''; position:absolute; width:0; height:2px; background:#00ffff; left:0; bottom:-4px; transition:0.3s;}
+nav a:hover::after {width:100%;}
+section {padding:80px 20px; max-width:900px; margin:auto; opacity:0; transform:translateY(30px); transition:1s;}
+section h2 {color:#ff00ff; margin-bottom:20px; font-size:2rem; text-align:left; position:relative;}
+section h2::after {content:''; display:block; width:50px; height:3px; background:#00ffff; margin-top:5px; border-radius:3px;}
+.card {background:linear-gradient(135deg, #1f1f1f, #2c2c2c); padding:25px; border-radius:15px; margin-bottom:30px; transition:transform 0.3s, box-shadow 0.3s; cursor:pointer;}
+.card:hover {transform:translateY(-5px); box-shadow:0 15px 30px rgba(0,255,255,0.4);}
+
+/* Contact form */
+.contact input, .contact textarea {width:100%; padding:14px; margin-bottom:15px; border:none; border-radius:10px; outline:none; font-size:1rem; background:#2c2c2c; color:#fff; transition:0.3s;}
+.contact input:focus, .contact textarea:focus {background:#333; box-shadow:0 0 15px #00ffff;}
+.contact button {width:100%; padding:14px; background:linear-gradient(90deg,#00ffff,#ff00ff); color:#121212; font-weight:bold; border:none; border-radius:10px; cursor:pointer; transition:0.3s;}
+.contact button:hover {transform:scale(1.05); box-shadow:0 0 20px #ff00ff;}
+footer {text-align:center; padding:20px; background:#1f1f1f; color:#fff; margin-top:40px; font-size:0.9rem;}
+
+/* ---------- SKILLS: BUTTON PATTERN (NEW) ---------- */
+.skills-buttons {
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  justify-content:center;
+  padding:8px;
+}
+
+/* base button look */
+.skill-btn {
+  padding:10px 20px;
+  border-radius:999px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.03);
+  cursor:pointer;
+  font-weight:700;
+  font-size:0.95rem;
+  line-height:1;
+  color: transparent; /* gradient text via background-clip */
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  transition: transform 0.18s cubic-bezier(.2,.9,.2,1), box-shadow 0.18s, background-color 0.18s;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  padding-left:22px;
+  padding-right:22px;
+  min-width:98px;
+  text-align:center;
+}
+
+/* hover / pop (pointer hover) */
+.skill-btn:hover,
+.skill-btn.visible { /* .visible is added when skills scroll into view */
+  transform: scale(1.12);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+}
+
+/* when pressed/touched we add .popped class from JS */
+.skill-btn.popped {
+  transform: scale(1.18) !important;
+  transition: transform 120ms;
+}
+
+/* focus visible for keyboard */
+.skill-btn:focus {
+  outline: 3px solid rgba(0,255,255,0.12);
+  outline-offset: 3px;
+  transform: scale(1.12);
+}
+
+/* per-skill gradient text + glow variable */
+.skill-html { background-image: linear-gradient(90deg,#ff7a7a,#ffd166); --glow: rgba(255,154,0,0.22); }
+.skill-css  { background-image: linear-gradient(90deg,#6ec1ff,#4facfe); --glow: rgba(80,170,255,0.18); }
+.skill-js   { background-image: linear-gradient(90deg,#f6e05e,#f97316); --glow: rgba(249,115,22,0.18); }
+.skill-cpp  { background-image: linear-gradient(90deg,#8ec5ff,#a6c1ee); --glow: rgba(100,150,255,0.14); }
+.skill-ms   { background-image: linear-gradient(90deg,#42e695,#3bb78f); --glow: rgba(66,230,149,0.14); }
+.skill-gsheets { background-image: linear-gradient(90deg,#7ee787,#39b54a); --glow: rgba(60,180,90,0.14); }
+.skill-python { background-image: linear-gradient(90deg,#f0db4f,#306998); --glow: rgba(80,120,255,0.14); }
+.skill-sql   { background-image: linear-gradient(90deg,#ff9a9e,#fecfef); --glow: rgba(255,120,160,0.12); }
+.skill-uiux  { background-image: linear-gradient(90deg,#f78ca0,#f5c4ff); --glow: rgba(247,140,160,0.12); }
+.skill-responsive { background-image: linear-gradient(90deg,#9be15d,#00e3ae); --glow: rgba(60,200,120,0.12); }
+
+/* glow on hover (using the per-button --glow) */
+.skill-btn:hover {
+  box-shadow: 0 12px 35px var(--glow);
+}
+
+/* small responsive tweaks */
+@media (max-width:520px){
+  .skill-btn { padding:10px 14px; font-size:0.9rem; min-width:82px; }
+  section {padding:40px 12px;}
+}
+/* ---------- END SKILLS ---------- */
+
+/* Projects slider */
+.project-slider {position:relative; overflow:hidden;}
+.slides {display:flex; transition:transform 0.5s ease-in-out;}
+.slide {min-width:100%; padding:20px; text-align:center; opacity:0; transform:scale(0.8); transition:transform 0.6s, opacity 0.6s;}
+.slide.active {opacity:1; transform:scale(1);}
+.slide h3 {color:#00ffff; margin-bottom:10px;}
+.slide p {color:#fff;}
+.project-slider button {position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,255,255,0.3); border:none; font-size:2rem; color:#fff; cursor:pointer; padding:10px 15px; border-radius:50%; transition:0.3s;}
+.project-slider button:hover {background:#00ffff; color:#121212;}
+.prev{left:10px;} .next{right:10px;}
+.dots{text-align:center; margin-top:15px;}
+.dot{height:12px; width:12px; margin:0 5px; display:inline-block; border-radius:50%; background:#555; cursor:pointer; transition:background 0.3s, transform 0.3s, box-shadow 0.5s;}
+.dot.active{background:#00ffff; transform:scale(1.3); box-shadow:0 0 15px #00ffff; animation:pulseDot 1.2s infinite;}
+@keyframes pulseDot{0%,100%{transform:scale(1.3); box-shadow:0 0 15px #00ffff;}50%{transform:scale(1.5); box-shadow:0 0 25px #00ffff;}}
+
+/* Fade-in scroll */
+.fade-in {opacity:0; transform:translateY(30px); transition:1s;}
+.fade-in.show{opacity:1; transform:translateY(0);}
+
+/* Particle background */
+#particles {position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; background:#121212;}
