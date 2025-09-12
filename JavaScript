@@ -1,0 +1,103 @@
+// Fade-in on scroll
+const faders = document.querySelectorAll('.fade-in');
+const appearOptions = {threshold:0.2};
+const appearOnScroll = new IntersectionObserver((entries, observer)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('show');
+    }
+  });
+}, appearOptions);
+faders.forEach(fader=>appearOnScroll.observe(fader));
+
+// ---------- SKILLS: button animations (replaces old bar animation) ----------
+const skillButtons = document.querySelectorAll('.skill-btn');
+const skillsSection = document.querySelector('#skills');
+
+const skillsObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // Add a visible class so buttons animate in (CSS handles hover/visible)
+      skillButtons.forEach(btn => btn.classList.add('visible'));
+      // we only need this once
+      skillsObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.25 });
+
+if (skillsSection) skillsObserver.observe(skillsSection);
+
+// Pointer (touch/mouse) interactions to create a quick "pop" effect
+skillButtons.forEach(btn => {
+  // pointerdown for touch and mouse
+  btn.addEventListener('pointerdown', () => {
+    btn.classList.add('popped');
+  });
+  // remove on pointerup/cancel/leave
+  ['pointerup','pointercancel','pointerleave'].forEach(ev => {
+    btn.addEventListener(ev, () => btn.classList.remove('popped'));
+  });
+  // keyboard activation (Enter / Space) — simulate pop
+  btn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      btn.classList.add('popped');
+      setTimeout(() => btn.classList.remove('popped'), 180);
+    }
+  });
+  // Optional: click action — you can attach anything here
+  btn.addEventListener('click', () => {
+    // small press feedback (already handled) — keep for future features
+  });
+});
+// ---------- END SKILLS ----------
+
+// Slider
+const slides = document.querySelector('.slides');
+const slide = document.querySelectorAll('.slide');
+const prev = document.querySelector('.prev');
+const next = document.querySelector('.next');
+const dotsContainer = document.querySelector('.dots');
+let index = 0;
+
+slide.forEach((_,i)=>{
+  const dot = document.createElement('span');
+  dot.classList.add('dot');
+  if(i===0) dot.classList.add('active');
+  dotsContainer.appendChild(dot);
+  dot.addEventListener('click',()=>showSlide(i));
+});
+
+const dots = document.querySelectorAll('.dot');
+
+function updateDots(){dots.forEach(d=>d.classList.remove('active'));dots[index].classList.add('active');}
+
+function showSlide(i){
+  if(i<0) index = slide.length-1;
+  else if(i>=slide.length) index = 0;
+  else index = i;
+  slides.style.transform = `translateX(${-index*100}%)`;
+  slide.forEach(s=>s.classList.remove('active'));
+  slide[index].classList.add('active');
+  updateDots();
+}
+
+if (prev) prev.addEventListener('click',()=>showSlide(index-1));
+if (next) next.addEventListener('click',()=>showSlide(index+1));
+showSlide(index);
+setInterval(()=>showSlide(index+1),5000);
+
+// Particle background
+const canvas=document.getElementById('particles');
+const ctx=canvas.getContext('2d');
+let particlesArray;
+if (canvas) {
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+
+  window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight; init();});
+
+  class Particle{constructor(){this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.size=Math.random()*3+1; this.speedX=Math.random()*1-0.5; this.speedY=Math.random()*1-0.5;}update(){this.x+=this.speedX; this.y+=this.speedY;if(this.x>canvas.width)this.x=0;if(this.x<0)this.x=canvas.width;if(this.y>canvas.height)this.y=0;if(this.y<0)this.y=canvas.height;}draw(){ctx.fillStyle='rgba(0,255,255,0.7)';ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fill();}}
+  function init(){particlesArray=[];for(let i=0;i<100;i++){particlesArray.push(new Particle());}}
+  function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particlesArray.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animate);}
+  init(); animate();
+}
